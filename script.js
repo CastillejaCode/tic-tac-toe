@@ -16,6 +16,7 @@ const gameControl = (() => {
 		// Check for complete rows
 		if (gameBoard.array.some((e) => e.every((test) => test === marker)))
 			console.log(`${marker} is the Winner!`);
+
 		// Check for complete columns
 		if (
 			(gameBoard.array[0][0] === marker &&
@@ -30,6 +31,7 @@ const gameControl = (() => {
 		)
 			console.log(`${marker} is the Winner!`);
 
+		// Check for complete diagonols
 		if (
 			(gameBoard.array[0][0] === marker &&
 				gameBoard.array[1][1] === marker &&
@@ -59,9 +61,12 @@ const players = (marker) => {
 	const getPlays = () => plays;
 
 	const placeMarker = ([column, row]) => {
-		plays.push([column, row]);
-		gameBoard.array[row][column] = getMarker();
-		gameControl.updateGameBoard(getMarker());
+		// plays.push([column, row]);
+		// Protect a/g duplicate spots
+		if (gameBoard.array[row][column] === '') {
+			gameBoard.array[row][column] = getMarker();
+			gameControl.updateGameBoard(getMarker());
+		} else console.log(`You can't pick a spot already chosen!`);
 	};
 
 	const getSquareInfo = () => {
