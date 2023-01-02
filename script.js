@@ -49,6 +49,16 @@ const gameControl = (() => {
 			console.log(`${marker} is the Winner!`);
 			return true;
 		}
+
+		// Check for tie
+		if (
+			gameBoard
+				.getArray()
+				.every((e) => e.every((test) => test === 'X' || test === '0'))
+		) {
+			console.log(`It's a tie!`);
+			return true;
+		}
 	};
 
 	const updateGameBoard = (marker) => {
@@ -107,9 +117,18 @@ const player1 = players('X');
 const player2 = players('0');
 
 player1.placeMarker([0, 1]);
-player1.placeMarker([1, 1]);
-player2.placeMarker([0, 0]);
-player2.placeMarker([2, 0]);
+player2.placeMarker([1, 1]);
+player1.placeMarker([0, 0]);
+player2.placeMarker([0, 2]);
+player2.placeMarker([2, 2]);
+// player2.placeMarker([2, 0]);
 player1.placeMarker([2, 1]);
 player2.placeMarker([1, 0]);
-console.log(gameBoard.getArray());
+player1.placeMarker([1, 2]);
+player1.placeMarker([2, 0]);
+// gameControl.resetBoard();
+// player1.placeMarker([0, 1]);
+// player2.placeMarker([1, 1]);
+// player1.placeMarker([0, 0]);
+// player1.placeMarker([0, 2]);
+// player2.placeMarker([2, 1]);
