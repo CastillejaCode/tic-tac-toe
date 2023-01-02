@@ -13,9 +13,32 @@ const gameBoard = (() => {
 
 const gameControl = (() => {
 	const checkforWin = (marker) => {
+		// Check for complete rows
 		if (gameBoard.array.some((e) => e.every((test) => test === marker)))
 			console.log(`${marker} is the Winner!`);
-		// if (gameBoard.array)
+		// Check for complete columns
+		if (
+			(gameBoard.array[0][0] === marker &&
+				gameBoard.array[1][0] === marker &&
+				gameBoard.array[2][0] === marker) ||
+			(gameBoard.array[0][1] === marker &&
+				gameBoard.array[1][1] === marker &&
+				gameBoard.array[2][1] === marker) ||
+			(gameBoard.array[0][2] === marker &&
+				gameBoard.array[1][2] === marker &&
+				gameBoard.array[2][2] === marker)
+		)
+			console.log(`${marker} is the Winner!`);
+
+		if (
+			(gameBoard.array[0][0] === marker &&
+				gameBoard.array[1][1] === marker &&
+				gameBoard.array[2][2] === marker) ||
+			(gameBoard.array[0][2] === marker &&
+				gameBoard.array[1][1] === marker &&
+				gameBoard.array[2][0] === marker)
+		)
+			console.log(`${marker} is the Winner!`);
 	};
 
 	const updateGameBoard = (marker) => {
@@ -55,6 +78,6 @@ const players = (marker) => {
 const player1 = players('X');
 const player2 = players('0');
 
-player2.placeMarker([2, 0]);
-player2.placeMarker([1, 0]);
-player2.placeMarker([0, 0]);
+player1.placeMarker([0, 0]);
+player1.placeMarker([1, 1]);
+player1.placeMarker([2, 2]);
