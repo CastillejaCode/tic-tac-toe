@@ -1,45 +1,60 @@
 /* eslint-disable no-unused-vars */
 const squares = document.querySelectorAll('.squares');
 
+// Game Board IIFE
 const gameBoard = (() => {
-	const gameBoardArray = [
+	const array = [
 		['', '', ''],
 		['', '', ''],
 		['', '', ''],
 	];
-	return { gameBoardArray };
+	return { array };
 })();
 
-function displayGameBoard() {
-	squares.forEach((e) => {
-		e.textContent = gameBoard.gameBoardArray[e.dataset.row][e.dataset.index];
-	});
-}
-
-// gameBoard.gameBoardArray[0][1] = 1234;
-
-displayGameBoard();
-
-const players = (marker = 'X') => {
-	const updateGameBoard = ([Y, X]) => {
-		gameBoard.gameBoardArray[Y][X] = marker;
-		displayGameBoard();
+const gameControl = (() => {
+	const checkforWin = (marker) => {
+		if (gameBoard.array.some((e) => e.every((test) => test === marker)))
+			console.log(`${marker} is the Winner!`);
+		// if (gameBoard.array)
 	};
 
-	const receiveSquareInfo = () => {
+	const updateGameBoard = (marker) => {
+		squares.forEach((e) => {
+			e.textContent = gameBoard.array[e.dataset.row][e.dataset.column];
+			checkforWin(marker);
+		});
+	};
+
+	return { updateGameBoard };
+})();
+
+// Players Factory Function
+const players = (marker) => {
+	const getMarker = () => marker;
+
+	const plays = [];
+	const getPlays = () => plays;
+
+	const placeMarker = ([column, row]) => {
+		plays.push([column, row]);
+		gameBoard.array[row][column] = getMarker();
+		gameControl.updateGameBoard(getMarker());
+	};
+
+	const getSquareInfo = () => {
 		squares.forEach((e) =>
-			e.addEventListener('click', () => {
-				let [X, Y] = [e.dataset.index, e.dataset.row];
-				updateGameBoard([Y, X]);
+			e.addEventListener('click', (ele) => {
+				plays.push([ele.dataset.column, ele.dataset.row]);
 			})
 		);
 	};
 
-	return { receiveSquareInfo };
-	// const placeMarker = (X) => gameBoard.gameBoardArray;
+	return { getMarker, getPlays, placeMarker, getSquareInfo };
 };
 
 const player1 = players('X');
 const player2 = players('0');
-player1.receiveSquareInfo();
-// player2.receiveSquareInfo();
+
+player2.placeMarker([2, 0]);
+player2.placeMarker([1, 0]);
+player2.placeMarker([0, 0]);
