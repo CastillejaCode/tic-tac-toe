@@ -58,7 +58,16 @@ const gameControl = (() => {
 		});
 	};
 
-	return { updateGameBoard, checkforWin };
+	const resetBoard = () => {
+		gameBoard.getArray().forEach((e) => {
+			e[0] = '';
+			e[1] = '';
+			e[2] = '';
+		});
+		updateGameBoard();
+	};
+
+	return { updateGameBoard, checkforWin, resetBoard };
 })();
 
 // Players Factory Function
@@ -103,3 +112,4 @@ player2.placeMarker([0, 0]);
 player2.placeMarker([2, 0]);
 player1.placeMarker([2, 1]);
 player2.placeMarker([1, 0]);
+console.log(gameBoard.getArray());
