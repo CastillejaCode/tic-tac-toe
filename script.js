@@ -77,7 +77,9 @@ const gameControl = (() => {
 		updateGameBoard();
 	};
 
-	return { updateGameBoard, checkforWin, resetBoard };
+	let toggle = true;
+
+	return { updateGameBoard, checkforWin, resetBoard, toggle };
 })();
 
 // Players Factory Function
@@ -102,30 +104,44 @@ const players = (marker) => {
 		} else console.log(`You can't pick a spot already chosen!`);
 	};
 
-	const getSquareInfo = () => {
-		squares.forEach((e) =>
-			e.addEventListener('click', (ele) => {
-				plays.push([ele.dataset.column, ele.dataset.row]);
-			})
-		);
-	};
+	// const getSquareInfo = () => {
+	// 	squares.forEach((e) =>
+	// 		e.addEventListener('click', (ele) => {
+	// 			plays.push([ele.dataset.column, ele.dataset.row]);
+	// 		})
+	// 	);
+	// };
 
-	return { getMarker, getPlays, placeMarker, getSquareInfo };
+	return { getMarker, getPlays, placeMarker };
 };
 
 const player1 = players('X');
 const player2 = players('0');
+console.log(gameControl.toggle);
 
-player1.placeMarker([0, 1]);
-player2.placeMarker([1, 1]);
-player1.placeMarker([0, 0]);
-player2.placeMarker([0, 2]);
-player2.placeMarker([2, 2]);
-// player2.placeMarker([2, 0]);
-player1.placeMarker([2, 1]);
-player2.placeMarker([1, 0]);
-player1.placeMarker([1, 2]);
-player1.placeMarker([2, 0]);
+// FIXME: On duplicate, toggle still goes off
+squares.forEach((e) => {
+	e.addEventListener('click', () => {
+		if (gameControl.toggle)
+			player1.placeMarker([e.dataset.column, e.dataset.row]);
+		else {
+			player2.placeMarker([e.dataset.column, e.dataset.row]);
+		}
+
+		gameControl.toggle = !gameControl.toggle;
+	});
+});
+
+// player1.placeMarker([0, 1]);
+// player2.placeMarker([1, 1]);
+// player1.placeMarker([0, 0]);
+// player2.placeMarker([0, 2]);
+// player2.placeMarker([2, 2]);
+// // player2.placeMarker([2, 0]);
+// player1.placeMarker([2, 1]);
+// player2.placeMarker([1, 0]);
+// player1.placeMarker([1, 2]);
+// player1.placeMarker([2, 0]);
 // gameControl.resetBoard();
 // player1.placeMarker([0, 1]);
 // player2.placeMarker([1, 1]);
