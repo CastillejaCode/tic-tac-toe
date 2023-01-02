@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 const squares = document.querySelectorAll('.squares');
+const btnStart = document.querySelector('.button-start');
 
 // Game Board IIFE
 const gameBoard = (() => {
@@ -77,17 +78,19 @@ const gameControl = (() => {
 		updateGameBoard();
 	};
 
-	let toggle = true;
+	const toggle = true;
+	const restart = false;
+	// const getToggle = () => toggle;
 
-	return { updateGameBoard, checkforWin, resetBoard, toggle };
+	return { updateGameBoard, checkforWin, resetBoard, toggle, restart };
 })();
 
 // Players Factory Function
 const players = (marker) => {
 	const getMarker = () => marker;
 
-	const plays = [];
-	const getPlays = () => plays;
+	// const plays = [];
+	// const getPlays = () => plays;
 
 	const placeMarker = ([column, row]) => {
 		// plays.push([column, row]);
@@ -101,35 +104,31 @@ const players = (marker) => {
 		if (gameBoard.getArray()[row][column] === '') {
 			gameBoard.getArray()[row][column] = getMarker();
 			gameControl.updateGameBoard(getMarker());
-		} else console.log(`You can't pick a spot already chosen!`);
+			gameControl.toggle = !gameControl.toggle;
+		} else {
+			console.log(`You can't pick a spot already chosen!`);
+		}
 	};
 
-	// const getSquareInfo = () => {
-	// 	squares.forEach((e) =>
-	// 		e.addEventListener('click', (ele) => {
-	// 			plays.push([ele.dataset.column, ele.dataset.row]);
-	// 		})
-	// 	);
-	// };
-
-	return { getMarker, getPlays, placeMarker };
+	return { getMarker, placeMarker };
 };
 
 const player1 = players('X');
 const player2 = players('0');
-console.log(gameControl.toggle);
 
-// FIXME: On duplicate, toggle still goes off
-squares.forEach((e) => {
-	e.addEventListener('click', () => {
-		if (gameControl.toggle)
-			player1.placeMarker([e.dataset.column, e.dataset.row]);
-		else {
-			player2.placeMarker([e.dataset.column, e.dataset.row]);
-		}
-
-		gameControl.toggle = !gameControl.toggle;
+btnStart.addEventListener('click', () => {
+	squares.forEach((e) => {
+		e.addEventListener('click', () => {
+			if (gameControl.toggle)
+				player1.placeMarker([e.dataset.column, e.dataset.row]);
+			else {
+				player2.placeMarker([e.dataset.column, e.dataset.row]);
+			}
+		});
 	});
+	if (gameControl.restart) {
+		gameControl.resetBoard();
+	} else gameControl.restart = true;
 });
 
 // player1.placeMarker([0, 1]);

@@ -156,7 +156,15 @@ body {
 
 .content {
 	display: grid;
-	place-content: center;
+	justify-content: center;
+	align-items: center;
+}
+
+.names {
+	display: flex;
+	justify-content: space-around;
+
+	font-size: 2rem;
 }
 
 .gameBoard-container {
@@ -164,8 +172,10 @@ body {
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: repeat(3, 1fr);
 
-	height: 60vh;
-	width: 60vh;
+	margin-bottom: 5rem;
+
+	height: 50vh;
+	width: 50vh;
 	border: 5px solid grey;
 }
 
