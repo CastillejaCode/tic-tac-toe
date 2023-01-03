@@ -2,6 +2,7 @@
 const squares = document.querySelectorAll('.squares');
 const btnStart = document.querySelector('.button-start');
 const gameBoardContainer = document.querySelector('.gameBoard-container');
+const messageWindow = document.querySelector('.message-window');
 
 // Game Board IIFE
 const gameBoard = (() => {
@@ -17,12 +18,20 @@ const gameBoard = (() => {
 })();
 
 const gameControl = (() => {
+	const toggleWinner = () => {
+		gameBoardContainer.classList.toggle('winner');
+		setTimeout(() => gameBoardContainer.classList.toggle('winner'), 300);
+	};
+
+	const displayWinner = (marker) => {
+		messageWindow.textContent = `${marker} is the Winner!`;
+	};
+
 	const checkforWin = (marker) => {
 		// Check for complete rows
 		if (gameBoard.getArray().some((e) => e.every((test) => test === marker))) {
-			console.log(`${marker} is the Winner!`);
-			gameBoardContainer.classList.toggle('winner');
-			setTimeout(() => gameBoardContainer.classList.toggle('winner'), 300);
+			displayWinner(marker);
+			toggleWinner();
 			return true;
 		}
 		// Check for complete columns
@@ -37,7 +46,8 @@ const gameControl = (() => {
 				gameBoard.getArray()[1][2] === marker &&
 				gameBoard.getArray()[2][2] === marker)
 		) {
-			console.log(`${marker} is the Winner!`);
+			displayWinner(marker);
+			toggleWinner();
 			return true;
 		}
 
@@ -50,7 +60,8 @@ const gameControl = (() => {
 				gameBoard.getArray()[1][1] === marker &&
 				gameBoard.getArray()[2][0] === marker)
 		) {
-			console.log(`${marker} is the Winner!`);
+			displayWinner(marker);
+			toggleWinner();
 			return true;
 		}
 
@@ -60,7 +71,7 @@ const gameControl = (() => {
 				.getArray()
 				.every((e) => e.every((test) => test === 'X' || test === '0'))
 		) {
-			console.log(`It's a tie!`);
+			messageWindow.textContent = "It's a tie!";
 			return true;
 		}
 	};
@@ -129,7 +140,19 @@ squares.forEach((e) => {
 	});
 });
 
-btnStart.addEventListener('click', () => gameControl.resetBoard());
+btnStart.addEventListener('click', () => {
+	squares.forEach((e) => {
+		e.style.backgroundColor = 'grey';
+		e.style.color = 'grey';
+	});
+	setTimeout((e) => {
+		gameControl.resetBoard();
+		squares.forEach((e) => {
+			e.style.backgroundColor = '#eaeaea';
+			e.style.color = 'black';
+		});
+	}, 500);
+});
 
 // player1.placeMarker([0, 1]);
 // player2.placeMarker([1, 1]);

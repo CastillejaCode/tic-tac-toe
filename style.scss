@@ -155,16 +155,27 @@ body {
 }
 
 .content {
-	display: grid;
+	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+
+	& > * {
+		margin: 2rem;
+	}
 }
 
 .names {
 	display: flex;
 	justify-content: space-around;
 
+	width: 50vh;
+
 	font-size: 2rem;
+}
+
+.button-start {
+	font-size: 1.2rem;
 }
 
 .gameBoard-container {
@@ -177,6 +188,8 @@ body {
 	height: 50vh;
 	width: 50vh;
 	border: 5px solid grey;
+
+	transition: all 0.3s;
 }
 
 .squares {
@@ -186,4 +199,10 @@ body {
 	border: 5px solid grey;
 
 	font-size: 5rem;
+
+	transition: all 0.5s;
+}
+
+.winner {
+	transform: scale(1.05);
 }
