@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 const squares = document.querySelectorAll('.squares');
 const btnStart = document.querySelector('.button-start');
+const gameBoardContainer = document.querySelector('.gameBoard-container');
 
 // Game Board IIFE
 const gameBoard = (() => {
@@ -20,6 +21,8 @@ const gameControl = (() => {
 		// Check for complete rows
 		if (gameBoard.getArray().some((e) => e.every((test) => test === marker))) {
 			console.log(`${marker} is the Winner!`);
+			gameBoardContainer.classList.toggle('winner');
+			setTimeout(() => gameBoardContainer.classList.toggle('winner'), 300);
 			return true;
 		}
 		// Check for complete columns
@@ -116,20 +119,17 @@ const players = (marker) => {
 const player1 = players('X');
 const player2 = players('0');
 
-btnStart.addEventListener('click', () => {
-	squares.forEach((e) => {
-		e.addEventListener('click', () => {
-			if (gameControl.toggle)
-				player1.placeMarker([e.dataset.column, e.dataset.row]);
-			else {
-				player2.placeMarker([e.dataset.column, e.dataset.row]);
-			}
-		});
+squares.forEach((e) => {
+	e.addEventListener('click', () => {
+		if (gameControl.toggle)
+			player1.placeMarker([e.dataset.column, e.dataset.row]);
+		else {
+			player2.placeMarker([e.dataset.column, e.dataset.row]);
+		}
 	});
-	if (gameControl.restart) {
-		gameControl.resetBoard();
-	} else gameControl.restart = true;
 });
+
+btnStart.addEventListener('click', () => gameControl.resetBoard());
 
 // player1.placeMarker([0, 1]);
 // player2.placeMarker([1, 1]);
