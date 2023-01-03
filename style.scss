@@ -161,17 +161,31 @@ body {
 	align-items: center;
 
 	& > * {
-		margin: 2rem;
+		margin: 1rem;
 	}
 }
 
 .names {
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 
 	width: 50vh;
 
 	font-size: 2rem;
+}
+
+.name {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	div {
+		margin-bottom: 1rem;
+	}
+
+	input {
+		accent-color: grey;
+	}
 }
 
 .button-start {

@@ -7,6 +7,8 @@ const player1Element = document.querySelector('.player1');
 const player2Element = document.querySelector('.player2');
 const score1 = document.querySelector('.score1');
 const score2 = document.querySelector('.score2');
+const limitRange = document.querySelector('#limit');
+const limitValue = document.querySelector('.limit-value');
 
 // Game Board IIFE
 const gameBoard = (() => {
@@ -22,7 +24,7 @@ const gameBoard = (() => {
 })();
 
 const gameControl = (() => {
-	const scoreLimit = 2;
+	let scoreLimit = 2;
 	let gameOver = false;
 
 	const toggleWinner = () => {
@@ -34,6 +36,7 @@ const gameControl = (() => {
 		// prettier-ignore
 		let currentPlayer = (marker === 'X' ? player1 : player2);
 		currentPlayer.scores += 1;
+		console.log(currentPlayer.scores);
 		(marker === 'X' ? score1 : score2).textContent = currentPlayer.scores;
 	};
 
@@ -47,7 +50,10 @@ const gameControl = (() => {
 
 	const displayWinner = (marker) => {
 		addScore(marker);
-		if ((marker === 'X' ? player1.scores : player2.scores) === scoreLimit) {
+		if (
+			(marker === 'X' ? player1.scores : player2.scores) ===
+			gameControl.scoreLimit
+		) {
 			title.textContent = `${
 				marker === 'X' ? player1.name : player2.name
 			} is the Champion`;
@@ -135,11 +141,11 @@ const gameControl = (() => {
 	};
 
 	function resetVisualBoard() {
-		squares.forEach((e) => {
-			e.style.backgroundColor = 'grey';
-			e.style.color = 'grey';
+		squares.forEach((ele) => {
+			ele.style.backgroundColor = 'grey';
+			ele.style.color = 'grey';
 		});
-		setTimeout((e) => {
+		setTimeout(() => {
 			gameControl.resetBoard();
 			squares.forEach((e) => {
 				e.style.backgroundColor = '#eaeaea';
@@ -160,6 +166,7 @@ const gameControl = (() => {
 		restart,
 		resetVisualBoard,
 		gameOver,
+		scoreLimit,
 	};
 })();
 
@@ -220,22 +227,10 @@ btnStart.addEventListener('click', () => {
 		gameControl.gameOver = false;
 	}
 	gameControl.resetVisualBoard();
-	// console.log(gameControl.gameOver);
 });
 
-// player1.placeMarker([0, 1]);
-// player2.placeMarker([1, 1]);
-// player1.placeMarker([0, 0]);
-// player2.placeMarker([0, 2]);
-// player2.placeMarker([2, 2]);
-// // player2.placeMarker([2, 0]);
-// player1.placeMarker([2, 1]);
-// player2.placeMarker([1, 0]);
-// player1.placeMarker([1, 2]);
-// player1.placeMarker([2, 0]);
-// gameControl.resetBoard();
-// player1.placeMarker([0, 1]);
-// player2.placeMarker([1, 1]);
-// player1.placeMarker([0, 0]);
-// player1.placeMarker([0, 2]);
-// player2.placeMarker([2, 1]);
+limitRange.addEventListener('input', () => {
+	limitValue.textContent = limitRange.value;
+	gameControl.scoreLimit = parseFloat(limitRange.value);
+	console.log(gameControl.scoreLimit, typeof gameControl.scoreLimit);
+});

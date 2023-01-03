@@ -160,14 +160,26 @@ body {
   align-items: center;
 }
 .content > * {
-  margin: 2rem;
+  margin: 1rem;
 }
 
 .names {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 50vh;
   font-size: 2rem;
+}
+
+.name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.name div {
+  margin-bottom: 1rem;
+}
+.name input {
+  accent-color: grey;
 }
 
 .button-start {
