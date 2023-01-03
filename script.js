@@ -3,6 +3,8 @@ const squares = document.querySelectorAll('.squares');
 const btnStart = document.querySelector('.button-start');
 const gameBoardContainer = document.querySelector('.gameBoard-container');
 const title = document.querySelector('.title');
+const player1Element = document.querySelector('.player1');
+const player2Element = document.querySelector('.player2');
 
 // Game Board IIFE
 const gameBoard = (() => {
@@ -30,7 +32,9 @@ const gameControl = (() => {
 				title.textContent = 'Tic-Tac-Toe';
 			}, 2000);
 		} else {
-			title.textContent = `${marker} is the winner`;
+			title.textContent = `${
+				marker === 'X' ? player1.name : player2.name
+			} is the winner`;
 			setTimeout((e) => {
 				title.textContent = 'Tic-Tac-Toe';
 			}, 2000);
@@ -132,11 +136,10 @@ const gameControl = (() => {
 })();
 
 // Players Factory Function
-const players = (marker) => {
+const players = (marker, name) => {
 	const getMarker = () => marker;
 
-	// const plays = [];
-	// const getPlays = () => plays;
+	// name;
 
 	const placeMarker = ([column, row]) => {
 		// plays.push([column, row]);
@@ -156,11 +159,18 @@ const players = (marker) => {
 		}
 	};
 
-	return { getMarker, placeMarker };
+	return { getMarker, placeMarker, name };
 };
 
-const player1 = players('X');
-const player2 = players('0');
+const player1 = players('X', 'Player 1');
+const player2 = players('0', 'Player 2');
+
+player1Element.addEventListener('input', () => {
+	player1.name = player1Element.textContent;
+});
+player2Element.addEventListener('input', () => {
+	player2.name = player2Element.textContent;
+});
 
 squares.forEach((e) => {
 	e.addEventListener('click', () => {
