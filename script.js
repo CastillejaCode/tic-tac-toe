@@ -5,6 +5,8 @@ const gameBoardContainer = document.querySelector('.gameBoard-container');
 const title = document.querySelector('.title');
 const player1Element = document.querySelector('.player1');
 const player2Element = document.querySelector('.player2');
+const score1 = document.querySelector('.score1');
+const score2 = document.querySelector('.score2');
 
 // Game Board IIFE
 const gameBoard = (() => {
@@ -20,13 +22,37 @@ const gameBoard = (() => {
 })();
 
 const gameControl = (() => {
+	let scoreLimit = 3;
+	let gameOver = false;
+
 	const toggleWinner = () => {
 		gameBoardContainer.classList.toggle('winner');
 		setTimeout(() => gameBoardContainer.classList.toggle('winner'), 300);
 	};
 
+	const addScore = (marker) => {
+		// prettier-ignore
+		let currentPlayer = (marker === 'X' ? player1 : player2);
+		currentPlayer.scores += 1;
+		(marker === 'X' ? score1 : score2).textContent = currentPlayer.scores;
+	};
+
+	// const checkScoreLimit = (marker) => {
+	// 	if ((marker === 'X' ? score1 : score2) === scoreLimit) {
+	// 		title.textContent = `${
+	// 			marker === 'X' ? player1.name : player2.name
+	// 		} is the Champion`;
+	// 	}
+	// };
+
 	const displayWinner = (marker, tie = false) => {
-		if (tie) {
+		addScore(marker);
+		if ((marker === 'X' ? player1.scores : player2.scores) === scoreLimit) {
+			title.textContent = `${
+				marker === 'X' ? player1.name : player2.name
+			} is the Champion`;
+			gameOver = true;
+		} else if (tie) {
 			title.textContent = `Tie`;
 			setTimeout((e) => {
 				title.textContent = 'Tic-Tac-Toe';
@@ -39,13 +65,16 @@ const gameControl = (() => {
 				title.textContent = 'Tic-Tac-Toe';
 			}, 2000);
 		}
+
+		// checkScoreLimit(marker);
+		toggleWinner();
 	};
 
 	const checkforWin = (marker) => {
 		// Check for complete rows
 		if (gameBoard.getArray().some((e) => e.every((test) => test === marker))) {
 			displayWinner(marker);
-			toggleWinner();
+			// toggleWinner();
 			return true;
 		}
 		// Check for complete columns
@@ -61,7 +90,7 @@ const gameControl = (() => {
 				gameBoard.getArray()[2][2] === marker)
 		) {
 			displayWinner(marker);
-			toggleWinner();
+			// toggleWinner();
 			return true;
 		}
 
@@ -75,7 +104,7 @@ const gameControl = (() => {
 				gameBoard.getArray()[2][0] === marker)
 		) {
 			displayWinner(marker);
-			toggleWinner();
+			// toggleWinner();
 			return true;
 		}
 
@@ -94,8 +123,8 @@ const gameControl = (() => {
 	const updateGameBoard = (marker) => {
 		squares.forEach((e) => {
 			e.textContent = gameBoard.getArray()[e.dataset.row][e.dataset.column];
-			checkforWin(marker);
 		});
+		checkforWin(marker);
 	};
 
 	const resetBoard = () => {
@@ -139,6 +168,7 @@ const gameControl = (() => {
 const players = (marker, name) => {
 	const getMarker = () => marker;
 
+	const scores = 0;
 	// name;
 
 	const placeMarker = ([column, row]) => {
@@ -159,7 +189,7 @@ const players = (marker, name) => {
 		}
 	};
 
-	return { getMarker, placeMarker, name };
+	return { getMarker, placeMarker, name, scores };
 };
 
 const player1 = players('X', 'Player 1');
