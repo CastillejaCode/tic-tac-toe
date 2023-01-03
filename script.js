@@ -24,7 +24,8 @@ const gameBoard = (() => {
 })();
 
 const gameControl = (() => {
-	let scoreLimit = 2;
+	let scoreLimit = 3;
+	let matchOver = false;
 	let gameOver = false;
 
 	const toggleWinner = () => {
@@ -48,6 +49,11 @@ const gameControl = (() => {
 	// 	}
 	// };
 
+	// const checkGameOver = () => {
+	// 	if (gameOver) return;
+	// 	gameOver = true;
+	// };
+
 	const displayWinner = (marker) => {
 		addScore(marker);
 		if (
@@ -57,7 +63,7 @@ const gameControl = (() => {
 			title.textContent = `${
 				marker === 'X' ? player1.name : player2.name
 			} is the Champion`;
-			gameControl.gameOver = true;
+			gameControl.matchOver = true;
 		} else {
 			title.textContent = `${
 				marker === 'X' ? player1.name : player2.name
@@ -74,8 +80,9 @@ const gameControl = (() => {
 	const checkforWin = (marker) => {
 		// Check for complete rows
 		if (gameBoard.getArray().some((e) => e.every((test) => test === marker))) {
+			gameOver = true;
 			displayWinner(marker);
-			// toggleWinner();
+
 			return true;
 		}
 		// Check for complete columns
@@ -91,7 +98,7 @@ const gameControl = (() => {
 				gameBoard.getArray()[2][2] === marker)
 		) {
 			displayWinner(marker);
-			// toggleWinner();
+
 			return true;
 		}
 
@@ -105,7 +112,7 @@ const gameControl = (() => {
 				gameBoard.getArray()[2][0] === marker)
 		) {
 			displayWinner(marker);
-			// toggleWinner();
+
 			return true;
 		}
 
@@ -166,6 +173,7 @@ const gameControl = (() => {
 		restart,
 		resetVisualBoard,
 		gameOver,
+		matchOver,
 		scoreLimit,
 	};
 })();
@@ -178,10 +186,11 @@ const players = (marker, name) => {
 	// name;
 
 	const placeMarker = ([column, row]) => {
-		// plays.push([column, row]);
+		// Protect a/g placing more markers when match won
+		if (gameControl.matchOver) return;
 
 		// Protect a/g adding spots when winner announced
-		if (gameControl.checkforWin('X') || gameControl.checkforWin('0')) {
+		if (gameControl.gameOver) {
 			console.log('Game is over, no more picking!');
 			return;
 		}
@@ -219,14 +228,15 @@ squares.forEach((e) => {
 });
 
 btnStart.addEventListener('click', () => {
-	if (gameControl.gameOver) {
+	if (gameControl.matchOver) {
 		title.textContent = 'Tic-Tac-Toe';
 		player1.scores = player2.scores = 0;
 		score1.textContent = player1.scores;
 		score2.textContent = player2.scores;
-		gameControl.gameOver = false;
+		gameControl.matchOver = false;
 	}
 	gameControl.resetVisualBoard();
+	gameControl.gameOver = false;
 });
 
 limitRange.addEventListener('input', () => {

@@ -166,6 +166,7 @@ body {
 .names {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 50vh;
   font-size: 2rem;
 }
@@ -180,6 +181,10 @@ body {
 }
 .name input {
   accent-color: grey;
+}
+
+.limit-container > * {
+  margin: 0.3rem;
 }
 
 .button-start {
