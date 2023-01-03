@@ -22,7 +22,7 @@ const gameBoard = (() => {
 })();
 
 const gameControl = (() => {
-	let scoreLimit = 3;
+	const scoreLimit = 2;
 	let gameOver = false;
 
 	const toggleWinner = () => {
@@ -45,18 +45,13 @@ const gameControl = (() => {
 	// 	}
 	// };
 
-	const displayWinner = (marker, tie = false) => {
+	const displayWinner = (marker) => {
 		addScore(marker);
 		if ((marker === 'X' ? player1.scores : player2.scores) === scoreLimit) {
 			title.textContent = `${
 				marker === 'X' ? player1.name : player2.name
 			} is the Champion`;
-			gameOver = true;
-		} else if (tie) {
-			title.textContent = `Tie`;
-			setTimeout((e) => {
-				title.textContent = 'Tic-Tac-Toe';
-			}, 2000);
+			gameControl.gameOver = true;
 		} else {
 			title.textContent = `${
 				marker === 'X' ? player1.name : player2.name
@@ -114,7 +109,10 @@ const gameControl = (() => {
 				.getArray()
 				.every((e) => e.every((test) => test === 'X' || test === '0'))
 		) {
-			displayWinner(marker, true);
+			title.textContent = `Tie`;
+			setTimeout((e) => {
+				title.textContent = 'Tic-Tac-Toe';
+			}, 2000);
 			resetVisualBoard();
 			return true;
 		}
@@ -161,6 +159,7 @@ const gameControl = (() => {
 		toggle,
 		restart,
 		resetVisualBoard,
+		gameOver,
 	};
 })();
 
@@ -213,7 +212,15 @@ squares.forEach((e) => {
 });
 
 btnStart.addEventListener('click', () => {
+	if (gameControl.gameOver) {
+		title.textContent = 'Tic-Tac-Toe';
+		player1.scores = player2.scores = 0;
+		score1.textContent = player1.scores;
+		score2.textContent = player2.scores;
+		gameControl.gameOver = false;
+	}
 	gameControl.resetVisualBoard();
+	// console.log(gameControl.gameOver);
 });
 
 // player1.placeMarker([0, 1]);
