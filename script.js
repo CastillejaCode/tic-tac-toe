@@ -9,6 +9,7 @@ const score1 = document.querySelector('.score1');
 const score2 = document.querySelector('.score2');
 const limitRange = document.querySelector('#limit');
 const limitValue = document.querySelector('.limit-value');
+const optionComputer = document.querySelector('.computer');
 
 // Game Board IIFE
 const gameBoard = (() => {
@@ -163,7 +164,30 @@ const gameControl = (() => {
 
 	const toggle = true;
 	const restart = false;
+	const computerStatus = true;
+	const plays = [];
 	// const getToggle = () => toggle;
+
+	const getComputerChoice = () => {
+		let row = Math.floor(Math.random() * 3);
+		let column = Math.floor(Math.random() * 3);
+
+		if (
+			gameBoard.getArray()[row][column] !== '' &&
+			!gameBoard
+				.getArray()
+				.every((e) => e.every((test) => test === 'X' || test === '0'))
+		) {
+			console.log('Loop');
+			while (gameBoard.getArray()[row][column] !== '') {
+				row = Math.floor(Math.random() * 3);
+				column = Math.floor(Math.random() * 3);
+			}
+		}
+		let result = [column, row];
+		console.log(result);
+		return result;
+	};
 
 	return {
 		updateGameBoard,
@@ -175,6 +199,9 @@ const gameControl = (() => {
 		gameOver,
 		matchOver,
 		scoreLimit,
+		computerStatus,
+		getComputerChoice,
+		plays,
 	};
 })();
 
@@ -183,7 +210,6 @@ const players = (marker, name) => {
 	const getMarker = () => marker;
 
 	const scores = 0;
-	// name;
 
 	const placeMarker = ([column, row]) => {
 		// Protect a/g placing more markers when match won
@@ -209,6 +235,7 @@ const players = (marker, name) => {
 
 const player1 = players('X', 'Player 1');
 const player2 = players('0', 'Player 2');
+// const computer2 = players('0', 'Computer');
 
 player1Element.addEventListener('input', () => {
 	player1.name = player1Element.textContent;
@@ -219,10 +246,18 @@ player2Element.addEventListener('input', () => {
 
 squares.forEach((e) => {
 	e.addEventListener('click', () => {
-		if (gameControl.toggle)
-			player1.placeMarker([e.dataset.column, e.dataset.row]);
-		else {
-			player2.placeMarker([e.dataset.column, e.dataset.row]);
+		if (gameControl.computerStatus) {
+			const playerCoords = [
+				parseFloat(e.dataset.column),
+				parseFloat(e.dataset.row),
+			];
+			player1.placeMarker(playerCoords);
+			// gameControl.plays.push(playerCoords);
+			player2.placeMarker(gameControl.getComputerChoice());
+		} else {
+			if (gameControl.toggle)
+				player1.placeMarker([e.dataset.column, e.dataset.row]);
+			else player2.placeMarker([e.dataset.column, e.dataset.row]);
 		}
 	});
 });
@@ -244,3 +279,15 @@ limitRange.addEventListener('input', () => {
 	gameControl.scoreLimit = parseFloat(limitRange.value);
 	console.log(gameControl.scoreLimit, typeof gameControl.scoreLimit);
 });
+
+// optionComputer.addEventListener('click', () => {
+// 	squares.forEach((e) => {
+// 		e.addEventListener('click', () => {
+// 			if (gameControl.toggle)
+// 				player1.placeMarker([e.dataset.column, e.dataset.row]);
+// 			else {
+// 				player2.placeMarker([e.dataset.column, e.dataset.row]);
+// 			}
+// 		});
+// 	});
+// });
