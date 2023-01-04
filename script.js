@@ -25,7 +25,7 @@ const gameBoard = (() => {
 })();
 
 const gameControl = (() => {
-	let scoreLimit = 3;
+	let scoreLimit = 5;
 	let matchOver = false;
 	let gameOver = false;
 
