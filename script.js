@@ -274,6 +274,10 @@ btnStart.addEventListener('click', () => {
 	gameControl.gameOver = false;
 });
 
+optionComputer.addEventListener('click', () => {
+	gameControl.computerStatus = !gameControl.computerStatus;
+});
+
 limitRange.addEventListener('input', () => {
 	limitValue.textContent = limitRange.value;
 	gameControl.scoreLimit = parseFloat(limitRange.value);
