@@ -1,4 +1,7 @@
+/* eslint-disable prefer-const */
 /* eslint-disable no-unused-vars */
+
+// DOM Elements
 const squares = document.querySelectorAll('.squares');
 const btnStart = document.querySelector('.button-start');
 const gameBoardContainer = document.querySelector('.gameBoard-container');
@@ -24,11 +27,13 @@ const gameBoard = (() => {
 	return { getArray };
 })();
 
+// Game rules IIFE
 const gameControl = (() => {
 	let scoreLimit = 5;
 	let matchOver = false;
 	let gameOver = false;
 
+	// gameBoard animation on win for visual indication
 	const toggleWinner = () => {
 		gameBoardContainer.classList.toggle('winner');
 		setTimeout(() => gameBoardContainer.classList.toggle('winner'), 300);
@@ -38,25 +43,13 @@ const gameControl = (() => {
 		// prettier-ignore
 		let currentPlayer = (marker === 'X' ? player1 : player2);
 		currentPlayer.scores += 1;
-		console.log(currentPlayer.scores);
 		(marker === 'X' ? score1 : score2).textContent = currentPlayer.scores;
 	};
 
-	// const checkScoreLimit = (marker) => {
-	// 	if ((marker === 'X' ? score1 : score2) === scoreLimit) {
-	// 		title.textContent = `${
-	// 			marker === 'X' ? player1.name : player2.name
-	// 		} is the Champion`;
-	// 	}
-	// };
-
-	// const checkGameOver = () => {
-	// 	if (gameOver) return;
-	// 	gameOver = true;
-	// };
-
 	const displayWinner = (marker) => {
 		addScore(marker);
+
+		// Change title to end of game message based on win conditions
 		if (
 			(marker === 'X' ? player1.scores : player2.scores) ===
 			gameControl.scoreLimit
@@ -74,18 +67,19 @@ const gameControl = (() => {
 			}, 2000);
 		}
 
-		// checkScoreLimit(marker);
 		toggleWinner();
+
+		// One end of a game reached, switch to true to indicate no more plays allowed
+		gameControl.gameOver = true;
 	};
 
-	const checkforWin = (marker) => {
+	const checkForWin = (marker) => {
 		// Check for complete rows
 		if (gameBoard.getArray().some((e) => e.every((test) => test === marker))) {
-			gameOver = true;
 			displayWinner(marker);
-
 			return true;
 		}
+
 		// Check for complete columns
 		if (
 			(gameBoard.getArray()[0][0] === marker &&
@@ -99,7 +93,6 @@ const gameControl = (() => {
 				gameBoard.getArray()[2][2] === marker)
 		) {
 			displayWinner(marker);
-
 			return true;
 		}
 
@@ -113,7 +106,6 @@ const gameControl = (() => {
 				gameBoard.getArray()[2][0] === marker)
 		) {
 			displayWinner(marker);
-
 			return true;
 		}
 
@@ -128,6 +120,7 @@ const gameControl = (() => {
 				title.textContent = 'Tic-Tac-Toe';
 			}, 2000);
 			resetVisualBoard();
+			gameOver = true;
 			return true;
 		}
 	};
@@ -136,7 +129,7 @@ const gameControl = (() => {
 		squares.forEach((e) => {
 			e.textContent = gameBoard.getArray()[e.dataset.row][e.dataset.column];
 		});
-		checkforWin(marker);
+		checkForWin(marker);
 	};
 
 	const resetBoard = () => {
@@ -172,6 +165,8 @@ const gameControl = (() => {
 		let row = Math.floor(Math.random() * 3);
 		let column = Math.floor(Math.random() * 3);
 
+		// If the intial choices are already taken, then cycle through random choices until the spot is empty
+		// Second argument stops infinite looping when board is full and computer tries to find empty spot ie., a tie
 		if (
 			gameBoard.getArray()[row][column] !== '' &&
 			!gameBoard
@@ -191,7 +186,7 @@ const gameControl = (() => {
 
 	return {
 		updateGameBoard,
-		checkforWin,
+		checkForWin,
 		resetBoard,
 		toggle,
 		restart,
@@ -235,8 +230,8 @@ const players = (marker, name) => {
 
 const player1 = players('X', 'Player 1');
 const player2 = players('0', 'Player 2');
-// const computer2 = players('0', 'Computer');
 
+// Change names anytime based on editable content
 player1Element.addEventListener('input', () => {
 	player1.name = player1Element.textContent;
 });
@@ -252,8 +247,9 @@ squares.forEach((e) => {
 				parseFloat(e.dataset.row),
 			];
 			player1.placeMarker(playerCoords);
-			// gameControl.plays.push(playerCoords);
-			player2.placeMarker(gameControl.getComputerChoice());
+			setTimeout(() => {
+				player2.placeMarker(gameControl.getComputerChoice());
+			}, Math.floor(Math.random() * (2000 - 500) + 500));
 		} else {
 			if (gameControl.toggle)
 				player1.placeMarker([e.dataset.column, e.dataset.row]);
@@ -263,6 +259,7 @@ squares.forEach((e) => {
 });
 
 btnStart.addEventListener('click', () => {
+	// If match won, reset board along with scores and title
 	if (gameControl.matchOver) {
 		title.textContent = 'Tic-Tac-Toe';
 		player1.scores = player2.scores = 0;
@@ -278,6 +275,7 @@ optionComputer.addEventListener('click', () => {
 	gameControl.computerStatus = !gameControl.computerStatus;
 });
 
+// Allow div to update to range value continuously
 limitRange.addEventListener('input', () => {
 	limitValue.textContent = limitRange.value;
 	gameControl.scoreLimit = parseFloat(limitRange.value);
