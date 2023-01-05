@@ -1,6 +1,3 @@
-/* eslint-disable prefer-const */
-/* eslint-disable no-unused-vars */
-
 // DOM Elements
 const squares = document.querySelectorAll('.squares');
 const btnRestart = document.querySelector('.button-restart');
@@ -35,7 +32,7 @@ const gameControl = (() => {
 	let gameOver = false;
 	// Switches turns between players
 	const toggle = true;
-	const restart = false;
+
 	const computerStatus = false;
 	// Used to make sure computer does not pick duplicates
 	const plays = [];
@@ -202,7 +199,6 @@ const gameControl = (() => {
 		checkForWin,
 		resetBoard,
 		toggle,
-		restart,
 		resetVisualBoard,
 		gameOver,
 		matchOver,
@@ -224,17 +220,13 @@ const players = (marker, name) => {
 		if (gameControl.matchOver) return;
 
 		// Protect a/g adding spots when winner announced
-		if (gameControl.gameOver) {
-			console.log('Game is over, no more picking!');
-			return;
-		}
+		if (gameControl.gameOver) return;
+
 		// Protect a/g duplicate spots
 		if (gameBoard.getArray()[row][column] === '') {
 			gameBoard.getArray()[row][column] = getMarker();
 			gameControl.updateGameBoard(getMarker());
 			gameControl.toggle = !gameControl.toggle;
-		} else {
-			console.log(`You can't pick a spot already chosen!`);
 		}
 	};
 
