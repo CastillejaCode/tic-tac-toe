@@ -12,7 +12,7 @@ const score1 = document.querySelector('.score1');
 const score2 = document.querySelector('.score2');
 const limitRange = document.querySelector('#limit');
 const limitValue = document.querySelector('.limit-value');
-const optionComputer = document.querySelector('.computer');
+const btnComputer = document.querySelector('.button-computer');
 const btnResetScores = document.querySelector('.button-score-reset');
 
 // Game Board IIFE
@@ -47,6 +47,15 @@ const gameControl = (() => {
 		(marker === 'X' ? score1 : score2).textContent = currentPlayer.scores;
 	};
 
+	const resetBoardAuto = () => {
+		setTimeout(() => {
+			if (gameControl.gameOver) {
+				resetVisualBoard();
+				gameControl.gameOver = false;
+			}
+		}, 3000);
+	};
+
 	const displayWinner = (marker) => {
 		addScore(marker);
 
@@ -72,6 +81,7 @@ const gameControl = (() => {
 
 		// One end of a game reached, switch to true to indicate no more plays allowed
 		gameControl.gameOver = true;
+		resetBoardAuto();
 	};
 
 	const checkForWin = (marker) => {
@@ -158,7 +168,7 @@ const gameControl = (() => {
 
 	const toggle = true;
 	const restart = false;
-	const computerStatus = true;
+	const computerStatus = false;
 	const plays = [];
 	// const getToggle = () => toggle;
 
@@ -282,7 +292,7 @@ btnResetScores.addEventListener('click', () => {
 	gameControl.matchOver = false;
 });
 
-optionComputer.addEventListener('click', () => {
+btnComputer.addEventListener('click', () => {
 	gameControl.computerStatus = !gameControl.computerStatus;
 });
 
@@ -290,7 +300,6 @@ optionComputer.addEventListener('click', () => {
 limitRange.addEventListener('input', () => {
 	limitValue.textContent = limitRange.value;
 	gameControl.scoreLimit = parseFloat(limitRange.value);
-	console.log(gameControl.scoreLimit, typeof gameControl.scoreLimit);
 });
 
 // optionComputer.addEventListener('click', () => {
