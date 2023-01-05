@@ -131,6 +131,7 @@ table {
 //Non-Default Styling
 
 $white: #eaeaea;
+$width: 50vh;
 
 body {
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
@@ -161,16 +162,16 @@ body {
 	align-items: center;
 
 	& > * {
-		margin: 1rem;
+		margin: 0.5rem;
 	}
 }
 
 .names {
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 	align-items: center;
 
-	width: 50vh;
+	width: $width;
 
 	font-size: 2rem;
 }
@@ -191,13 +192,22 @@ body {
 
 .limit-container {
 	& > * {
-		margin: 0.3rem;
+		margin: 0.2rem;
+	}
+}
+
+.options {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	justify-content: space-around;
+	width: $width;
+	gap: 1rem;
+	button {
+		font-size: 1.2rem;
 	}
 }
 
 .button-start {
-	font-size: 1.2rem;
-
 	transition: 0.3s;
 }
 
@@ -209,7 +219,7 @@ body {
 	margin-bottom: 5rem;
 
 	height: 50vh;
-	width: 50vh;
+	width: $width;
 	border: 5px solid grey;
 
 	transition: all 0.3s;

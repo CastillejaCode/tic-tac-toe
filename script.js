@@ -3,7 +3,7 @@
 
 // DOM Elements
 const squares = document.querySelectorAll('.squares');
-const btnStart = document.querySelector('.button-start');
+const btnRestart = document.querySelector('.button-restart');
 const gameBoardContainer = document.querySelector('.gameBoard-container');
 const title = document.querySelector('.title');
 const player1Element = document.querySelector('.player1');
@@ -13,6 +13,7 @@ const score2 = document.querySelector('.score2');
 const limitRange = document.querySelector('#limit');
 const limitValue = document.querySelector('.limit-value');
 const optionComputer = document.querySelector('.computer');
+const btnResetScores = document.querySelector('.button-score-reset');
 
 // Game Board IIFE
 const gameBoard = (() => {
@@ -249,7 +250,7 @@ squares.forEach((e) => {
 			player1.placeMarker(playerCoords);
 			setTimeout(() => {
 				player2.placeMarker(gameControl.getComputerChoice());
-			}, Math.floor(Math.random() * (2000 - 500) + 500));
+			}, Math.floor(Math.random() * (1000 - 300) + 300));
 		} else {
 			if (gameControl.toggle)
 				player1.placeMarker([e.dataset.column, e.dataset.row]);
@@ -258,7 +259,7 @@ squares.forEach((e) => {
 	});
 });
 
-btnStart.addEventListener('click', () => {
+btnRestart.addEventListener('click', () => {
 	// If match won, reset board along with scores and title
 	if (gameControl.matchOver) {
 		title.textContent = 'Tic-Tac-Toe';
@@ -269,6 +270,16 @@ btnStart.addEventListener('click', () => {
 	}
 	gameControl.resetVisualBoard();
 	gameControl.gameOver = false;
+});
+
+btnResetScores.addEventListener('click', () => {
+	title.textContent = 'Tic-Tac-Toe';
+	player1.scores = player2.scores = 0;
+	score1.textContent = player1.scores;
+	score2.textContent = player2.scores;
+	gameControl.resetVisualBoard();
+	gameControl.gameOver = false;
+	gameControl.matchOver = false;
 });
 
 optionComputer.addEventListener('click', () => {
