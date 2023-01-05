@@ -48,12 +48,11 @@ const gameControl = (() => {
 	};
 
 	const resetBoardAuto = () => {
-		setTimeout(() => {
-			if (gameControl.gameOver) {
+		if (gameControl.gameOver && !gameControl.matchOver)
+			setTimeout(() => {
 				resetVisualBoard();
 				gameControl.gameOver = false;
-			}
-		}, 3000);
+			}, 3000);
 	};
 
 	const displayWinner = (marker) => {
@@ -292,8 +291,12 @@ btnResetScores.addEventListener('click', () => {
 	gameControl.matchOver = false;
 });
 
-btnComputer.addEventListener('click', () => {
+btnComputer.addEventListener('click', (e) => {
 	gameControl.computerStatus = !gameControl.computerStatus;
+	btnComputer.classList.toggle('state-on');
+	if (btnComputer.classList.contains('state-on'))
+		btnComputer.textContent = 'Computer ON';
+	else btnComputer.textContent = 'Computer';
 });
 
 // Allow div to update to range value continuously
