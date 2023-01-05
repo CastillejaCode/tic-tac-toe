@@ -187,6 +187,9 @@ body {
 .limit-container > * {
   margin: 0.2rem;
 }
+.limit-container input {
+  cursor: pointer;
+}
 
 .options {
   display: grid;
@@ -199,6 +202,7 @@ body {
   border-radius: 10px;
   font-size: 1.2rem;
   transition: all 0.3s;
+  cursor: pointer;
 }
 
 .gameBoard-container {
@@ -218,7 +222,8 @@ body {
   place-content: center;
   border: 5px solid grey;
   font-size: 5rem;
-  transition: all 0.5s;
+  transition: all 0.3s;
+  cursor: pointer;
 }
 
 .winner {
@@ -227,4 +232,13 @@ body {
 
 .state-on {
   transform: translateY(-20px);
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */ /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+supported by Chrome, Edge, Opera and Firefox */
 }/*# sourceMappingURL=style.css.map */

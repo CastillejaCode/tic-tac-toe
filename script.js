@@ -48,11 +48,12 @@ const gameControl = (() => {
 	};
 
 	const resetBoardAuto = () => {
-		if (gameControl.gameOver && !gameControl.matchOver)
-			setTimeout(() => {
+		setTimeout(() => {
+			if (gameControl.gameOver && !gameControl.matchOver) {
 				resetVisualBoard();
 				gameControl.gameOver = false;
-			}, 3000);
+			}
+		}, 3000);
 	};
 
 	const displayWinner = (marker) => {
@@ -159,7 +160,7 @@ const gameControl = (() => {
 		setTimeout(() => {
 			gameControl.resetBoard();
 			squares.forEach((e) => {
-				e.style.backgroundColor = '#eaeaea';
+				e.style.backgroundColor = '';
 				e.style.color = 'black';
 			});
 		}, 500);
@@ -251,16 +252,26 @@ player2Element.addEventListener('input', () => {
 
 squares.forEach((e) => {
 	e.addEventListener('click', () => {
+		// Computer Gameplay
 		if (gameControl.computerStatus) {
 			const playerCoords = [
 				parseFloat(e.dataset.column),
 				parseFloat(e.dataset.row),
 			];
+			// Stop Computer from placing when click on duplicate
+			if (
+				gameBoard.getArray()[parseFloat(e.dataset.row)][
+					parseFloat(e.dataset.column)
+				]
+			)
+				return;
 			player1.placeMarker(playerCoords);
 			setTimeout(() => {
 				player2.placeMarker(gameControl.getComputerChoice());
 			}, Math.floor(Math.random() * (1000 - 300) + 300));
-		} else {
+		}
+		// Default 2 player Gameplay
+		else {
 			if (gameControl.toggle)
 				player1.placeMarker([e.dataset.column, e.dataset.row]);
 			else player2.placeMarker([e.dataset.column, e.dataset.row]);
