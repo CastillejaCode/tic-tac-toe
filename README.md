@@ -1,5 +1,8 @@
 # tic-tac-toe
 
+--Practicing using modular programming--
+--Factory functions and IIFE--
+
 Click anywhere to start the game.
 
 Default state is to allow two players to go compete against one another.
