@@ -262,3 +262,19 @@ body {
 	user-select: none; /* Non-prefixed version, currently
 									supported by Chrome, Edge, Opera and Firefox */
 }
+
+// Footer
+
+.footer {
+	font-size: 2vh;
+	display: grid;
+	place-content: center;
+	position: fixed;
+	bottom: 10px;
+	width: 100vw;
+
+	a {
+		all: unset;
+		cursor: help;
+	}
+}

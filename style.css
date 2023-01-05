@@ -241,4 +241,17 @@ body {
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently
 supported by Chrome, Edge, Opera and Firefox */
+}
+
+.footer {
+  font-size: 2vh;
+  display: grid;
+  place-content: center;
+  position: fixed;
+  bottom: 10px;
+  width: 100vw;
+}
+.footer a {
+  all: unset;
+  cursor: help;
 }/*# sourceMappingURL=style.css.map */

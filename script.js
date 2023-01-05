@@ -33,6 +33,12 @@ const gameControl = (() => {
 	let scoreLimit = 5;
 	let matchOver = false;
 	let gameOver = false;
+	// Switches turns between players
+	const toggle = true;
+	const restart = false;
+	const computerStatus = false;
+	// Used to make sure computer does not pick duplicates
+	const plays = [];
 
 	// gameBoard animation on win for visual indication
 	const toggleWinner = () => {
@@ -49,6 +55,7 @@ const gameControl = (() => {
 
 	const resetBoardAuto = () => {
 		setTimeout(() => {
+			// Reset automatically if player does not
 			if (gameControl.gameOver && !gameControl.matchOver) {
 				resetVisualBoard();
 				gameControl.gameOver = false;
@@ -56,10 +63,7 @@ const gameControl = (() => {
 		}, 3000);
 	};
 
-	const displayWinner = (marker) => {
-		addScore(marker);
-
-		// Change title to end of game message based on win conditions
+	const changeTitle = (marker) => {
 		if (
 			(marker === 'X' ? player1.scores : player2.scores) ===
 			gameControl.scoreLimit
@@ -76,11 +80,17 @@ const gameControl = (() => {
 				title.textContent = 'Tic-Tac-Toe';
 			}, 2000);
 		}
+	};
+	const displayWinner = (marker) => {
+		addScore(marker);
+
+		changeTitle(marker);
 
 		toggleWinner();
 
 		// One end of a game reached, switch to true to indicate no more plays allowed
 		gameControl.gameOver = true;
+
 		resetBoardAuto();
 	};
 
@@ -166,12 +176,6 @@ const gameControl = (() => {
 		}, 500);
 	}
 
-	const toggle = true;
-	const restart = false;
-	const computerStatus = false;
-	const plays = [];
-	// const getToggle = () => toggle;
-
 	const getComputerChoice = () => {
 		let row = Math.floor(Math.random() * 3);
 		let column = Math.floor(Math.random() * 3);
@@ -184,14 +188,12 @@ const gameControl = (() => {
 				.getArray()
 				.every((e) => e.every((test) => test === 'X' || test === '0'))
 		) {
-			console.log('Loop');
 			while (gameBoard.getArray()[row][column] !== '') {
 				row = Math.floor(Math.random() * 3);
 				column = Math.floor(Math.random() * 3);
 			}
 		}
 		let result = [column, row];
-		console.log(result);
 		return result;
 	};
 
@@ -315,15 +317,3 @@ limitRange.addEventListener('input', () => {
 	limitValue.textContent = limitRange.value;
 	gameControl.scoreLimit = parseFloat(limitRange.value);
 });
-
-// optionComputer.addEventListener('click', () => {
-// 	squares.forEach((e) => {
-// 		e.addEventListener('click', () => {
-// 			if (gameControl.toggle)
-// 				player1.placeMarker([e.dataset.column, e.dataset.row]);
-// 			else {
-// 				player2.placeMarker([e.dataset.column, e.dataset.row]);
-// 			}
-// 		});
-// 	});
-// });
