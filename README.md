@@ -23,3 +23,5 @@ The "Restart Game" button resets the current board but saves scores.
 The "Computer" button allows Player 1 to compete against a computer, at which point in time allows only 1 difficutly setting, which is quite easy as the computer only picks random spots.
 
 The Computer Button can be turned on or off in the middle of a game.
+
+Enjoy.
